@@ -14,22 +14,19 @@ const SliderMenuItem = Me.imports.ui.SliderMenuItem;
 const ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_Brightness extends PanelMenu.Button {
     _init() {
         super._init(St.Align.START);
-        var icon =  new St.Icon({icon_name: 'display-brightness-symbolic', 
+        let icon =  new St.Icon({icon_name: 'display-brightness-symbolic', 
                                    style_class: 'system-status-icon'});
         this.add_actor(icon);
 
-        var iconLabel = new St.Label({
+        let iconLabel = new St.Label({
                         style_class: 'helloworld-label', // add CSS label
                         text: "br"
                         });
         this.add_actor(iconLabel);
 
-        this.displays =  [];
+        this.displays =  DDC.getDisplays();
         this.sliders = [];
-        DDC.getDisplays().then(result => {
-            this.displays = result
-            this.reloadDisplays();
-        });
+        this.reloadDisplays();
     }
 
     reloadDisplays() {

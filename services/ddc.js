@@ -4,7 +4,7 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const MyShell = Me.imports.services.shell;
 
-async function getDisplays() {
+function getDisplays() {
 
     const result = MyShell.exec('ddcutil detect --brief');
     const displays = [];

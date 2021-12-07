@@ -13,7 +13,7 @@ function init() {
 
 function enable() {
     screenBrightnessPanelMenu = new ScreenBrightnessPanelMenu.ScreenBrightnessPanelMenu();
-    Main.panel.addToStatusArea('brightness', screenBrightnessPanelMenu); 
+    Main.panel.addToStatusArea('adjust_display_brightness', screenBrightnessPanelMenu); 
 }
 
 function disable() {
