@@ -4,7 +4,7 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const MyShell = Me.imports.services.shell;
 
-function getDisplays() {
+async function getDisplays() {
 
     const result = MyShell.exec('ddcutil detect --brief');
     const displays = [];
@@ -31,7 +31,7 @@ function getDisplays() {
 }
 
 function getDisplayBrightness(bus) {
-    const result = MyShell.exec(`ddcutil getvcp 10 --nodetect --bus ${bus} --brief`).split(' ');
+    const result = MyShell.exec(`ddcutil getvcp 10 --bus ${bus} --brief`).split(' ');
     return {
         current: result[3],
         max: result[4]
@@ -39,7 +39,6 @@ function getDisplayBrightness(bus) {
 }
 
 function setDisplayBrightness(bus, value) {
-    const result = MyShell.execAsync(`ddcutil setvcp 10 ${value} --nodetect --bus ${bus}`);
-    log(`ddcutil setvcp 10 ${value} --nodetect --bus ${bus}`);
+    const result = MyShell.execAsync(`ddcutil setvcp 10 ${value} --bus ${bus}`);
     log(result);
 }

@@ -16,6 +16,7 @@ sudo apt install ddcutil
 sudo adduser $USER i2c
 sudo /bin/sh -c 'echo i2c-dev >> /etc/modules'
 ```
+A reboot is needed.
 
 ## Official GNOME Shell Extensions website
 

@@ -1,13 +1,12 @@
 const St = imports.gi.St;
 const ExtensionUtils = imports.misc.extensionUtils;
 const PopupMenu = imports.ui.popupMenu;
-const Lang = imports.lang;
 const Slider = imports.ui.slider;
 const GObject = imports.gi.GObject;
 
 const Me = ExtensionUtils.getCurrentExtension();
-const ddcService = Me.imports.services.ddc;
-const timer = Me.imports.services.timer;
+const DDC = Me.imports.services.ddc;
+const Timer = Me.imports.services.timer;
 
 const LabeldSliderItem = GObject.registerClass(class Labeld_SliderItem extends PopupMenu.PopupMenuItem {  
     _init(sliderValue, params) {
@@ -15,16 +14,15 @@ const LabeldSliderItem = GObject.registerClass(class Labeld_SliderItem extends P
 
         this.slider = new Slider.Slider(sliderValue);
         this._updateSliderLabel(sliderValue);
-        this.slider.connect('notify::value', Lang.bind(this, function(item) {
+        this.slider.connect('notify::value', (item) => {
              this._updateSliderLabel(item._value); 
-        }));
+        });
 
         this.add(this.slider);
     }    
 
     _updateSliderLabel(sliderValue) {
-        let valueText = parseInt(sliderValue * 100).toString();
-        this.label.text = valueText;
+        this.label.text = parseInt(sliderValue * 100).toString();
     }
 
     setValue(sliderValue){
@@ -37,6 +35,8 @@ const BrightnessSliderItem = GObject.registerClass(class Brightness_SliderItem e
     _init(bus, name, current, max, params) {
         super._init("", params);
 
+        this.connect('destroy', this._onDestroy.bind(this));
+
         this.bus = bus;
         this.name = name;
         this.current = current;
@@ -45,9 +45,9 @@ const BrightnessSliderItem = GObject.registerClass(class Brightness_SliderItem e
 
         this.setValue(current / max);
 
-        this.slider.connect('drag-end', Lang.bind(this, function(item) {
+        this.slider.connect('drag-end', (item) => {
               this._broadcastBrightness(item._value);
-        }));
+        });
 
         this.display_label = new St.Label({
                         style_class: 'helloworld-label', // add CSS label
@@ -70,13 +70,19 @@ const BrightnessSliderItem = GObject.registerClass(class Brightness_SliderItem e
 
     _broadcastBrightness(sliderValue) {
         if (this.timeout) {
-            timer.clearTimeout(this.timeout);
+            Timer.clearTimeout(this.timeout);
         }
-        this.timeout = timer.setTimeout(() => {
+        this.timeout = Timer.setTimeout(() => {
             const brightness = this._ratioToBrightness(sliderValue);
             log(`Set brightness ${brightness} on bus ${this.bus}`);
-            ddcService.setDisplayBrightness(this.bus, brightness);
+            DDC.setDisplayBrightness(this.bus, brightness);
         }, 500);
+    }
+
+    _onDestroy(){
+        if (this.timeout) {
+            Timer.clearTimeout(this.timeout);
+        };
     }
 
 });
@@ -86,13 +92,13 @@ const MainBrightnessSliderItem = GObject.registerClass(class Main_BrightnessSlid
         super._init(value, params);
         this.sliders = sliders;
 
-        this.slider.connect('drag-end', Lang.bind(this, function(item) {
+        this.slider.connect('drag-end', (item) => {
               this._setAllBrightness(item._value)
-        }));
+        });
 
-        this.slider.connect('notify::value', Lang.bind(this, function(item) {
+        this.slider.connect('notify::value', (item) => {
               this._setAllValue(item._value)
-        }));
+        });
     }
 
     _setAllBrightness(value) {
