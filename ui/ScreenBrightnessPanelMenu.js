@@ -16,6 +16,8 @@ const DialogBox = Me.imports.ui.DialogBox;
 var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPanelMenu extends PanelMenu.Button {
     _init() {
         super._init(St.Align.START);
+        this.connect('destroy', this._onDestroy.bind(this));
+
         var icon =  new St.Icon({icon_name: 'display-brightness-symbolic', 
                                    style_class: 'system-status-icon'});
         this.add_actor(icon);
@@ -30,13 +32,13 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
         this.sliders = [];
         this.reloadDisplays();
 
-        this.log_dialog = new DialogBox.DialogBox();
-
+        
+        this.log_dialog = null;
         this.log_button = new PopupMenu.PopupMenuItem('Show logging');
         this.log_button.connect('activate', (item) => {
+            this.log_dialog = new DialogBox.DialogBox();
             this.log_dialog.setText(Log.Log.toString());
             this.log_dialog.open(global.get_current_time());
-
         });
         this.menu.addMenuItem(this.log_button);
         
@@ -61,5 +63,11 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
         } else {
             this.menu.addMenuItem(new PopupMenu.PopupMenuItem('No monitors detected.', {'reactive': false}));
         }
+    }
+
+    _onDestroy(){
+        if (this.log_dialog) {
+            this.log_dialog.destroy();
+        };
     }
 });
