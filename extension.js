@@ -8,7 +8,7 @@ const ScreenBrightnessPanelMenu = Me.imports.ui.ScreenBrightnessPanelMenu;
 let screenBrightnessPanelMenu;
 
 function init() {
-    log(`Initializing ${Me.metadata.name} version ${Me.metadata.version}`);
+    log(`${Me.metadata.uuid} initializing,  version ${Me.metadata.version}`);
 }
 
 function enable() {

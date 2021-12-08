@@ -8,7 +8,7 @@ const Me = ExtensionUtils.getCurrentExtension();
 const DDC = Me.imports.services.ddc;
 const Timer = Me.imports.services.timer;
 
-const LabeldSliderItem = GObject.registerClass(class Labeld_SliderItem extends PopupMenu.PopupMenuItem {  
+var LabeldSliderItem = GObject.registerClass(class Labeld_SliderItem extends PopupMenu.PopupMenuItem {  
     _init(sliderValue, params) {
         super._init("", params);
 
@@ -31,7 +31,7 @@ const LabeldSliderItem = GObject.registerClass(class Labeld_SliderItem extends P
     }
 });
 
-const BrightnessSliderItem = GObject.registerClass(class Brightness_SliderItem extends LabeldSliderItem {  
+var BrightnessSliderItem = GObject.registerClass(class Brightness_SliderItem extends LabeldSliderItem {  
     _init(bus, name, current, max, params) {
         super._init("", params);
 
@@ -73,7 +73,7 @@ const BrightnessSliderItem = GObject.registerClass(class Brightness_SliderItem e
             Timer.clearTimeout(this.timeout);
         }
         this.timeout = Timer.setTimeout(() => {
-            const brightness = this._ratioToBrightness(sliderValue);
+            var brightness = this._ratioToBrightness(sliderValue);
             log(`Set brightness ${brightness} on bus ${this.bus}`);
             DDC.setDisplayBrightness(this.bus, brightness);
         }, 500);
@@ -87,7 +87,7 @@ const BrightnessSliderItem = GObject.registerClass(class Brightness_SliderItem e
 
 });
 
-const MainBrightnessSliderItem = GObject.registerClass(class Main_BrightnessSliderItem extends LabeldSliderItem {  
+var MainBrightnessSliderItem = GObject.registerClass(class Main_BrightnessSliderItem extends LabeldSliderItem {  
     _init(value, sliders, params) {
         super._init(value, params);
         this.sliders = sliders;
@@ -102,13 +102,13 @@ const MainBrightnessSliderItem = GObject.registerClass(class Main_BrightnessSlid
     }
 
     _setAllBrightness(value) {
-        for (const s of this.sliders) {
+        for (var s of this.sliders) {
            s.setBrightness(value);
         }
     }
 
     _setAllValue(value) {
-        for (const s of this.sliders) {
+        for (var s of this.sliders) {
            s.setValue(value);
         }
     }

@@ -7,7 +7,7 @@ const MyShell = Me.imports.services.shell;
 function getDisplays() {
 
     const result = MyShell.exec('ddcutil detect --brief');
-    log(${Me.metadata.name}, " - ", "getDisplays", result);
+    log(`${Me.metadata.uuid} - getDisplays ${result}`);
     const displays = [];
 
     result.split('Display ').forEach(group => {
@@ -19,7 +19,7 @@ function getDisplays() {
         
         if (bus && name){ //&& serialNumber) {
             const {current, max} = getDisplayBrightness(bus);
-            log(${Me.metadata.name}, " - ", "getDisplays - OK", bus, description, name, current, max);
+            log(`${Me.metadata.uuid} - getDisplays - OK ${bus}, ${description}, ${name}, ${current}, ${max}`);
             displays.push({
                 bus,
                 name,
@@ -28,7 +28,7 @@ function getDisplays() {
                 max
             });
         } else {
-            log(${Me.metadata.name}, " - ", "getDisplays - ERR (current, max)", bus, description, name);
+            log(`${Me.metadata.uuid} - getDisplays - ERR ${bus}, ${description}, ${name}`);
         }
 
     });
@@ -38,7 +38,7 @@ function getDisplays() {
 
 function getDisplayBrightness(bus) {
     const result = MyShell.exec(`ddcutil getvcp 10 --bus ${bus} --brief`).split(' ');
-    log(${Me.metadata.name}, " - ", "getDisplayBrightness", result)
+    log(`${Me.metadata.uuid} - getDisplayBrightness ${result}`);
     return {
         current: result[3],
         max: result[4]
@@ -47,5 +47,5 @@ function getDisplayBrightness(bus) {
 
 function setDisplayBrightness(bus, value) {
     const result = MyShell.execAsync(`ddcutil setvcp 10 ${value} --bus ${bus}`);
-    log(${Me.metadata.name}, " - ", "setDisplayBrightness", result)
+    log(`${Me.metadata.uuid} - setDisplayBrightness ${result}`);
 }

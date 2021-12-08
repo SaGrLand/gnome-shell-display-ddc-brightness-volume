@@ -11,40 +11,42 @@ const Timer = Me.imports.services.timer;
 const SliderMenuItem = Me.imports.ui.SliderMenuItem;
 
 
-const ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPanelMenu extends PanelMenu.Button {
+var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPanelMenu extends PanelMenu.Button {
     _init() {
         super._init(St.Align.START);
-        let icon =  new St.Icon({icon_name: 'display-brightness-symbolic', 
+        var icon =  new St.Icon({icon_name: 'display-brightness-symbolic', 
                                    style_class: 'system-status-icon'});
         this.add_actor(icon);
 
-        let iconLabel = new St.Label({
+        var iconLabel = new St.Label({
                         style_class: 'helloworld-label', // add CSS label
-                        text: "br"
+                        text: 'br'
                         });
         this.add_actor(iconLabel);
 
         this.displays =  DDC.getDisplays();
         this.sliders = [];
         this.reloadDisplays();
-        log(log(${Me.metadata.name}, " - ", "ScreenBrightnessPanelMenu init finsihed.");
+        log(`${Me.metadata.uuid} - ScreenBrightnessPanelMenu init finsihed.`);
     }
 
     reloadDisplays() {
         if (Array.isArray(this.displays) && 1 <= this.displays.length) {
             var mainSliderValue = this.displays[0].current / this.displays[0].max; 
-            var mainSlider = new SliderMenuItem.MainBrightnessSliderItem(mainSliderValue, this.sliders, {}); 
+            var mainSlider = new SliderMenuItem.MainBrightnessSliderItem(
+                mainSliderValue, this.sliders, {}); 
 
             this.menu.addMenuItem(mainSlider);
             this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
             for (var display of this.displays) {
-                var slider = new SliderMenuItem.BrightnessSliderItem(display.bus, `${display.name}`, display.current, display.max, {});
+                var slider = new SliderMenuItem.BrightnessSliderItem(
+                    display.bus, display.name, display.current, display.max, {});
                 this.sliders.push(slider);
                 this.menu.addMenuItem(slider);
             }
         } else {
-            this.menu.addMenuItem(new PopupMenu.PopupMenuItem("No monitors detected.", {'reactive': false}));
+            this.menu.addMenuItem(new PopupMenu.PopupMenuItem('No monitors detected.', {'reactive': false}));
         }
     }
 });
