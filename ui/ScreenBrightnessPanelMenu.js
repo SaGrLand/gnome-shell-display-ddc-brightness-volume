@@ -11,7 +11,7 @@ const Timer = Me.imports.services.timer;
 const SliderMenuItem = Me.imports.ui.SliderMenuItem;
 
 
-const ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_Brightness extends PanelMenu.Button {
+const ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPanelMenu extends PanelMenu.Button {
     _init() {
         super._init(St.Align.START);
         let icon =  new St.Icon({icon_name: 'display-brightness-symbolic', 
@@ -27,10 +27,11 @@ const ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_Brightness 
         this.displays =  DDC.getDisplays();
         this.sliders = [];
         this.reloadDisplays();
+        log(log(${Me.metadata.name}, " - ", "ScreenBrightnessPanelMenu init finsihed.");
     }
 
     reloadDisplays() {
-        if (Array.isArray(this.displays) && this.displays.length) {
+        if (Array.isArray(this.displays) && 1 <= this.displays.length) {
             var mainSliderValue = this.displays[0].current / this.displays[0].max; 
             var mainSlider = new SliderMenuItem.MainBrightnessSliderItem(mainSliderValue, this.sliders, {}); 
 
