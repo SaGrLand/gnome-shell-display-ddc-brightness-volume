@@ -6,6 +6,7 @@ const GObject = imports.gi.GObject;
 
 const Me = ExtensionUtils.getCurrentExtension();
 const DDC = Me.imports.services.ddc;
+const Log = Me.imports.services.log;
 const Timer = Me.imports.services.timer;
 
 var LabeldSliderItem = GObject.registerClass(class Labeld_SliderItem extends PopupMenu.PopupMenuItem {  
@@ -74,7 +75,6 @@ var BrightnessSliderItem = GObject.registerClass(class Brightness_SliderItem ext
         }
         this.timeout = Timer.setTimeout(() => {
             var brightness = this._ratioToBrightness(sliderValue);
-            log(`Set brightness ${brightness} on bus ${this.bus}`);
             DDC.setDisplayBrightness(this.bus, brightness);
         }, 500);
     }

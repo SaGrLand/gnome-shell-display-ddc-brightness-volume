@@ -6,9 +6,11 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
 const DDC = Me.imports.services.ddc;
+const Log = Me.imports.services.log;
 const MyShell = Me.imports.services.shell;
 const Timer = Me.imports.services.timer;
 const SliderMenuItem = Me.imports.ui.SliderMenuItem;
+const DialogBox = Me.imports.ui.DialogBox;
 
 
 var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPanelMenu extends PanelMenu.Button {
@@ -27,7 +29,18 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
         this.displays =  DDC.getDisplays();
         this.sliders = [];
         this.reloadDisplays();
-        log(`${Me.metadata.uuid} - ScreenBrightnessPanelMenu init finsihed.`);
+
+        this.log_dialog = new DialogBox.DialogBox();
+
+        this.log_button = new PopupMenu.PopupMenuItem('Show logging');
+        this.log_button.connect('activate', (item) => {
+            this.log_dialog.setText(Log.Log.toString());
+            this.log_dialog.open(global.get_current_time());
+
+        });
+        this.menu.addMenuItem(this.log_button);
+        
+        Log.Log.log(`ScreenBrightnessPanelMenu init finsihed.`);
     }
 
     reloadDisplays() {

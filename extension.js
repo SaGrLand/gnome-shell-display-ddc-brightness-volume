@@ -3,12 +3,13 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
 const ScreenBrightnessPanelMenu = Me.imports.ui.ScreenBrightnessPanelMenu;
+const Log = Me.imports.services.log;
 
 
 let screenBrightnessPanelMenu;
 
 function init() {
-    log(`${Me.metadata.uuid} initializing,  version ${Me.metadata.version}`);
+    Log.Log.log(`initializing,  version ${Me.metadata.version}`);
 }
 
 function enable() {

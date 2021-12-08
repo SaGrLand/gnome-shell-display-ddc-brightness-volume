@@ -2,12 +2,14 @@
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
+
+const Log = Me.imports.services.log;
 const MyShell = Me.imports.services.shell;
 
 function getDisplays() {
 
     const result = MyShell.exec('ddcutil detect --brief');
-    log(`${Me.metadata.uuid} - getDisplays ${result}`);
+    Log.Log.log(`getDisplays ${result}`);
     const displays = [];
 
     result.split('Display ').forEach(group => {
@@ -19,7 +21,7 @@ function getDisplays() {
         
         if (bus && name){ //&& serialNumber) {
             const {current, max} = getDisplayBrightness(bus);
-            log(`${Me.metadata.uuid} - getDisplays - OK ${bus}, ${description}, ${name}, ${current}, ${max}`);
+            Log.Log.log(`getDisplays - OK ${bus}, ${description}, ${name}, ${current}, ${max}`);
             displays.push({
                 bus,
                 name,
@@ -28,7 +30,7 @@ function getDisplays() {
                 max
             });
         } else {
-            log(`${Me.metadata.uuid} - getDisplays - ERR ${bus}, ${description}, ${name}`);
+            Log.Log.log(`getDisplays - ERR ${bus}, ${description}, ${name}`);
         }
 
     });
@@ -38,7 +40,7 @@ function getDisplays() {
 
 function getDisplayBrightness(bus) {
     const result = MyShell.exec(`ddcutil getvcp 10 --bus ${bus} --brief`).split(' ');
-    log(`${Me.metadata.uuid} - getDisplayBrightness ${result}`);
+    Log.Log.log(`getDisplayBrightness ${result}`);
     return {
         current: result[3],
         max: result[4]
@@ -47,5 +49,5 @@ function getDisplayBrightness(bus) {
 
 function setDisplayBrightness(bus, value) {
     const result = MyShell.execAsync(`ddcutil setvcp 10 ${value} --bus ${bus}`);
-    log(`${Me.metadata.uuid} - setDisplayBrightness ${result}`);
+    Log.Log.log(`setDisplayBrightness ${result}`);
 }
