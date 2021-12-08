@@ -6,7 +6,8 @@ const ScreenBrightnessPanelMenu = Me.imports.ui.ScreenBrightnessPanelMenu;
 const Log = Me.imports.services.log;
 
 
-let screenBrightnessPanelMenu;
+var screenBrightnessPanelMenu;
+
 
 function init() {
     Log.Log.log(`initializing,  version ${Me.metadata.version}`);

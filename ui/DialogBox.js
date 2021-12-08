@@ -9,7 +9,7 @@ const Me = ExtensionUtils.getCurrentExtension();
 
 const Log = Me.imports.services.log;
 
-const DialogBox = new Lang.Class({
+var DialogBox = new Lang.Class({
     Name: 'MyAboutDialog',
     Extends: ModalDialog.ModalDialog,
 
@@ -27,11 +27,11 @@ const DialogBox = new Lang.Class({
 
                          ]);
 
-        let box = new St.BoxLayout({ vertical: true});
+        var box = new St.BoxLayout({ vertical: true});
         this.contentLayout.add(box);
 
-        let gicon = new Gio.FileIcon({ file: Gio.file_new_for_path(Me.path + "/icons/icon.png") });
-        let icon = new St.Icon({ gicon: gicon });
+        var gicon = new Gio.FileIcon({ file: Gio.file_new_for_path(Me.path + "/icons/icon.png") });
+        var icon = new St.Icon({ gicon: gicon });
         box.add(icon);
 
         this.label = new St.Label({ text: "" ,
