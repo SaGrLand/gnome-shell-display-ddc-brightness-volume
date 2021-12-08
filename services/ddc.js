@@ -9,7 +9,7 @@ const MyShell = Me.imports.services.shell;
 function getDisplays() {
 
     const result = MyShell.exec('ddcutil detect --brief');
-    Log.Log.log(`getDisplays ${result}`);
+    Log.Log.log(`getDisplays - ${result}`);
     const displays = [];
 
     result.split('Display ').forEach(group => {
@@ -40,7 +40,7 @@ function getDisplays() {
 
 function getDisplayBrightness(bus) {
     const result = MyShell.exec(`ddcutil getvcp 10 --bus ${bus} --brief`).split(' ');
-    Log.Log.log(`getDisplayBrightness ${result}`);
+    Log.Log.log(`getDisplayBrightness - bus: ${bus}, result: ${result}`);
     return {
         current: result[3],
         max: result[4]
@@ -49,5 +49,5 @@ function getDisplayBrightness(bus) {
 
 function setDisplayBrightness(bus, value) {
     const result = MyShell.execAsync(`ddcutil setvcp 10 ${value} --bus ${bus}`);
-    Log.Log.log(`setDisplayBrightness ${result}`);
+    Log.Log.log(`setDisplayBrightness - value: ${value}, bus: ${bus}, result: ${result}`);
 }

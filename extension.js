@@ -23,4 +23,6 @@ function disable() {
         screenBrightnessPanelMenu.destroy();
         screenBrightnessPanelMenu = null;
     }
+
+    Log.Log.empty();
 }

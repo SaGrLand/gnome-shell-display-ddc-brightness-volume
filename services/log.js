@@ -18,8 +18,6 @@ class Log {
 	}
 
 	static empty(){
-		this.init();
-
 		Log.logs = [];
 	}
 
