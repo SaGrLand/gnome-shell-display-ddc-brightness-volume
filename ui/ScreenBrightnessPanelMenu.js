@@ -30,6 +30,7 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
         this.add_actor(iconLabel);
 
         this.sliders = [];
+        this.mainSlider = null;
         this.displays =  DDC.getDisplays();
         
         this.installDDCUtilDialog = new InstallDDCUtilDialogBox.InstallDDCUtilDialogBox();
@@ -51,6 +52,7 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
             this.logDialog.open(global.get_current_time(), true);
         });
         this.menu.addMenuItem(this.logButton);
+
         
         Log.Log.log(`ScreenBrightnessPanelMenu init finsihed.`);
     }
@@ -58,10 +60,13 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
     reloadDisplays() {
         if (Array.isArray(this.displays) && 1 <= this.displays.length) {
             var mainSliderValue = this.displays[0].current / this.displays[0].max; 
-            var mainSlider = new SliderMenuItem.MainBrightnessSliderItem(
-                mainSliderValue, this.sliders, {}); 
 
-            this.menu.addMenuItem(mainSlider);
+            if (this.mainSlider == null) {
+                this.mainSlider = new SliderMenuItem.MainBrightnessSliderItem(
+                    mainSliderValue, this.sliders, {}); 
+            }
+
+            this.menu.addMenuItem(this.mainSlider);
             this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
             for (var display of this.displays) {
@@ -79,10 +84,12 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
         if (this.logDialog) {
             this.logDialog.close();
             this.logDialog.destroy();
+            this.logDialog = null;
         };
         if (this.installDDCUtilDialog) {
-            this.logDialog.close();
+            this.installDDCUtilDialog.close();
             this.installDDCUtilDialog.destroy();
+            this.installDDCUtilDialog = null;
         };
     }
 });
