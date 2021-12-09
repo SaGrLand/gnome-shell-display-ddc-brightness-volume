@@ -36,7 +36,7 @@ var BrightnessSliderItem = GObject.registerClass(class Brightness_SliderItem ext
     _init(bus, name, current, max, params) {
         super._init("", params);
 
-        this.connect('destroy', this._onDestroy.bind(this));
+        this.connect('destroy', () => {this._onDestroy()});
 
         this.bus = bus;
         this.name = name;

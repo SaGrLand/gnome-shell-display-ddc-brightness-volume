@@ -10,13 +10,14 @@ const Log = Me.imports.services.log;
 const MyShell = Me.imports.services.shell;
 const Timer = Me.imports.services.timer;
 const SliderMenuItem = Me.imports.ui.SliderMenuItem;
-const DialogBox = Me.imports.ui.DialogBox;
+const LogDialogBox = Me.imports.ui.LogDialogBox;
+const InstallDDCUtilDialogBox = Me.imports.ui.InstallDDCUtilDialogBox;
 
 
 var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPanelMenu extends PanelMenu.Button {
     _init() {
         super._init(St.Align.START);
-        this.connect('destroy', this._onDestroy.bind(this));
+        this.connect('destroy', () => {this._onDestroy()});
 
         var icon =  new St.Icon({icon_name: 'display-brightness-symbolic', 
                                    style_class: 'system-status-icon'});
@@ -28,19 +29,28 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
                         });
         this.add_actor(iconLabel);
 
-        this.displays =  DDC.getDisplays();
         this.sliders = [];
-        this.reloadDisplays();
-
+        this.displays =  DDC.getDisplays();
         
-        this.log_dialog = null;
-        this.log_button = new PopupMenu.PopupMenuItem('Show logging');
-        this.log_button.connect('activate', (item) => {
-            this.log_dialog = new DialogBox.DialogBox();
-            this.log_dialog.setText(Log.Log.toString());
-            this.log_dialog.open(global.get_current_time());
+        this.installDDCUtilDialog = new InstallDDCUtilDialogBox.InstallDDCUtilDialogBox();
+        this.installDDCUtilButton = new PopupMenu.PopupMenuItem('ddcutil is not installed');
+        if (this.displays){
+            this.reloadDisplays();
+        } else {
+            Log.Log.log(`ScreenBrightnessPanelMenu - ddcutil not installed.`);
+            this.installDDCUtilButton.connect('activate', (item) => {
+                this.installDDCUtilDialog.open(global.get_current_time(), true);
+            });
+            this.menu.addMenuItem(this.installDDCUtilButton);
+        };
+        
+        this.logDialog = new LogDialogBox.LogDialogBox();
+        this.logButton = new PopupMenu.PopupMenuItem('Show logging');
+        this.logButton.connect('activate', (item) => {
+            this.logDialog.setText(Log.Log.toString());
+            this.logDialog.open(global.get_current_time(), true);
         });
-        this.menu.addMenuItem(this.log_button);
+        this.menu.addMenuItem(this.logButton);
         
         Log.Log.log(`ScreenBrightnessPanelMenu init finsihed.`);
     }
@@ -66,8 +76,13 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
     }
 
     _onDestroy(){
-        if (this.log_dialog) {
-            this.log_dialog.destroy();
+        if (this.logDialog) {
+            this.logDialog.close();
+            this.logDialog.destroy();
+        };
+        if (this.installDDCUtilDialog) {
+            this.logDialog.close();
+            this.installDDCUtilDialog.destroy();
         };
     }
 });

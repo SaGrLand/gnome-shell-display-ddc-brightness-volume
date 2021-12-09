@@ -9,6 +9,11 @@ const MyShell = Me.imports.services.shell;
 function getDisplays() {
 
     const result = MyShell.exec('ddcutil detect --brief');
+
+    if (result == null){
+        return null;
+    };
+
     Log.Log.log(`getDisplays - ${result}`);
     const displays = [];
 

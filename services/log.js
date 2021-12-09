@@ -25,8 +25,8 @@ class Log {
 		this.init();
 
 		var rv = "";
-		for (var log of Log.logs){ 
-			rv += "### " + log + "\n";
+		for (var l of Log.logs){ 
+			rv += "### " + l + "\n";
 		}
 		return rv;
 	}
