@@ -19,4 +19,4 @@ sudo /bin/sh -c 'echo i2c-dev >> /etc/modules'
 A reboot is needed.
 
 ## Official GNOME Shell Extensions website
-
+[https://extensions.gnome.org/extension/4652/adjust-display-brightness/](https://extensions.gnome.org/extension/4652/adjust-display-brightness/)
