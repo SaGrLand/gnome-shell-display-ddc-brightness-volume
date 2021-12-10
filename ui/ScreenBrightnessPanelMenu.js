@@ -48,7 +48,7 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
         this.logDialog = new LogDialogBox.LogDialogBox();
         this.logButton = new PopupMenu.PopupMenuItem('Show logging');
         this.logButton.connect('activate', (item) => {
-            this.logDialog.setText(Log.Log.toString());
+            this.logDialog.setText(Log.Log.toStringLastN(10));
             this.logDialog.open(global.get_current_time(), true);
         });
         this.menu.addMenuItem(this.logButton);

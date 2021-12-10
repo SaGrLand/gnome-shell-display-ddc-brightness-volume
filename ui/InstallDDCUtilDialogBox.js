@@ -16,11 +16,11 @@ var InstallDDCUtilDialogBox = GObject.registerClass(class Install_DDCUtilDialogB
 
         this.setButtons([{ label: "OK",
                            action: () => {this._onClose()},
-                           key:    Clutter.Escape
+                           key:    Clutter.KEY_Escape
                          },
                          { label: "Copy to clipboard",
                            action: () => {this._copyToClipBoard()},
-                           key:    Clutter.Escape
+                           key:    Clutter.KEY_Tab
                          },
                          ]);
 
@@ -54,5 +54,4 @@ var InstallDDCUtilDialogBox = GObject.registerClass(class Install_DDCUtilDialogB
         St.Clipboard.get_default().set_text(St.ClipboardType.CLIPBOARD, this.label.text);
         this.close(global.get_current_time());
     }
-
 });

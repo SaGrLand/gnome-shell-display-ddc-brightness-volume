@@ -16,11 +16,11 @@ var LogDialogBox = GObject.registerClass(class Log_DialogBox extends ModalDialog
 
         this.setButtons([{ label: "OK",
                            action: () => {this._onClose()},
-                           key:    Clutter.Escape
+                           key:    Clutter.KEY_Escape
                          },
                          { label: "Copy to clipboard",
                            action: () => {this._copyToClipBoard()},
-                           key:    Clutter.Escape
+                           key:    Clutter.KEY_Tab
                          },
 
                          ]);
@@ -53,5 +53,4 @@ var LogDialogBox = GObject.registerClass(class Log_DialogBox extends ModalDialog
         St.Clipboard.get_default().set_text(St.ClipboardType.CLIPBOARD, Log.Log.toString());
         this.close(global.get_current_time());
     }
-
 });

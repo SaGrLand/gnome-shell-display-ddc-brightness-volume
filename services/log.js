@@ -4,7 +4,7 @@ class Log {
         	Log.logs = [];
     	}
     	if ( typeof Log.maxLength == 'undefined' ) {
-        	Log.maxLength = 50;
+        	Log.maxLength = 100;
     	}
 	}
 
@@ -27,6 +27,17 @@ class Log {
 		var rv = "";
 		for (var l of Log.logs){ 
 			rv += "### " + l + "\n";
+		}
+		return rv;
+	}
+
+
+	static toStringLastN(n){
+		this.init();
+
+		var rv = "";
+		for (let i = Log.logs.length-n; i < Log.logs.length; i++) {
+			rv += "### " + Log.logs[i] + "\n";
 		}
 		return rv;
 	}
