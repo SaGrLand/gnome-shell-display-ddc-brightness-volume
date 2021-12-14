@@ -28,13 +28,20 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
                         text: 'br'
                         });
         this.add_actor(iconLabel);
+        this.populateMenu();
 
+        Log.Log.log(`ScreenBrightnessPanelMenu init finsihed.`);
+    }
+
+
+    populateMenu(){
+        this.setMenu(new PopupMenu.PopupMenu(this, St.Align.START, St.Side.TOP, 0));
         this.sliders = [];
         this.mainSlider = null;
         this.displays =  DDC.getDisplays();
         
         this.installDDCUtilDialog = new InstallDDCUtilDialogBox.InstallDDCUtilDialogBox();
-        this.installDDCUtilButton = new PopupMenu.PopupMenuItem('ddcutil is not installed');
+        this.installDDCUtilButton = new PopupMenu.PopupMenuItem('ddcutil is not ins  talled');
         if (this.displays){
             this.reloadDisplays();
         } else {
@@ -44,17 +51,22 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
             });
             this.menu.addMenuItem(this.installDDCUtilButton);
         };
-        
+
         this.logDialog = new LogDialogBox.LogDialogBox();
         this.logButton = new PopupMenu.PopupMenuItem('Show logging');
         this.logButton.connect('activate', (item) => {
             this.logDialog.setText(Log.Log.toStringLastN(10));
             this.logDialog.open(global.get_current_time(), true);
         });
-        this.menu.addMenuItem(this.logButton);
 
+        this.reloadButton = new PopupMenu.PopupMenuItem('Reload displays');
+        this.reloadButton.connect('activate', (item) => {
+            this.populateMenu();
+        });
         
-        Log.Log.log(`ScreenBrightnessPanelMenu init finsihed.`);
+        this.menu.addMenuItem(this.logButton);
+        this.menu.addMenuItem(this.reloadButton);
+
     }
 
     reloadDisplays() {

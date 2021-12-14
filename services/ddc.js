@@ -25,8 +25,18 @@ function getDisplays() {
         //const serialNumber = description ? description.split(':')[2] : null;
         
         if (bus && name){ //&& serialNumber) {
-            const {current, max} = getDisplayBrightness(bus);
-            Log.Log.log(`getDisplays - OK ${bus}, ${description}, ${name}, ${current}, ${max}`);
+            var  rv = getDisplayBrightness(bus);
+            var current = rv.current;
+            var max = rv.max;
+            
+            if (current == null || max == null){
+                Log.Log.log(`getDisplays - ERR ${bus}, ${description}, ${name}, ${current}, ${max}`);
+                current = 0;
+                max = 100;
+            } else {
+                Log.Log.log(`getDisplays - OK ${bus}, ${description}, ${name}, ${current}, ${max}`);
+            }
+
             displays.push({
                 bus,
                 name,
