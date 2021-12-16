@@ -41,7 +41,7 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
         this.displays =  DDC.getDisplays();
         
         this.installDDCUtilDialog = new InstallDDCUtilDialogBox.InstallDDCUtilDialogBox();
-        this.installDDCUtilButton = new PopupMenu.PopupMenuItem('ddcutil is not ins  talled');
+        this.installDDCUtilButton = new PopupMenu.PopupMenuItem('ddcutil is not installed');
         if (this.displays){
             this.reloadDisplays();
         } else {
