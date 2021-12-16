@@ -32,7 +32,7 @@ function getDisplays() {
                 
                 if (current == null || max == null){
                     Log.Log.log(`getDisplays - ERR ${bus}, ${description}, ${name}, ${current}, ${max}`);
-                    current = 0;java
+                    current = 0;
                     max = 100;
                 } else {
                     Log.Log.log(`getDisplays - OK ${bus}, ${description}, ${name}, ${current}, ${max}`);
