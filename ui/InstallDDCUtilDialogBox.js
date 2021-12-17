@@ -12,7 +12,6 @@ const Log = Me.imports.services.log;
 var InstallDDCUtilDialogBox = GObject.registerClass(class Install_DDCUtilDialogBox extends ModalDialog.ModalDialog {
     _init() {
         super._init({ styleClass: 'extension-dialog'});
-        this._destroyOnClose = false; 
 
         this.setButtons([{ label: "OK",
                            action: () => {this._onClose()},

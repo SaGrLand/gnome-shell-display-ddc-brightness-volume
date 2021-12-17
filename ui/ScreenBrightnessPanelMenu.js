@@ -38,23 +38,29 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
         this.setMenu(new PopupMenu.PopupMenu(this, St.Align.START, St.Side.TOP, 0));
         this.sliders = [];
         this.mainSlider = null;
-        this.displays =  DDC.getDisplays();
-        
-        this.installDDCUtilDialog = new InstallDDCUtilDialogBox.InstallDDCUtilDialogBox();
-        this.installDDCUtilButton = new PopupMenu.PopupMenuItem('ddcutil is not installed');
-        if (this.displays){
-            this.reloadDisplays();
-        } else {
-            Log.Log.log(`ScreenBrightnessPanelMenu - ddcutil not installed.`);
-            this.installDDCUtilButton.connect('activate', (item) => {
-                this.installDDCUtilDialog.open(global.get_current_time(), true);
-            });
-            this.menu.addMenuItem(this.installDDCUtilButton);
-        };
 
-        this.logDialog = new LogDialogBox.LogDialogBox();
+        try{
+            this.displays =  DDC.getDisplays();
+
+            this.installDDCUtilButton = new PopupMenu.PopupMenuItem('ddcutil is not installed');
+            if (this.displays){
+                this.addDisplaySliders();
+            } else {
+                Log.Log.log(`ScreenBrightnessPanelMenu - ddcutil not installed.`);
+                this.installDDCUtilButton.connect('activate', (item) => {
+                    this.installDDCUtilDialog = new InstallDDCUtilDialogBox.InstallDDCUtilDialogBox();
+                    this.installDDCUtilDialog.open(global.get_current_time(), true);
+                });
+                this.menu.addMenuItem(this.installDDCUtilButton);
+            };
+        } catch(error){
+            Log.Log.log(error.stack);
+            this.displays = null; 
+        }
+
         this.logButton = new PopupMenu.PopupMenuItem('Show logging');
         this.logButton.connect('activate', (item) => {
+            this.logDialog = new LogDialogBox.LogDialogBox();
             this.logDialog.setText(Log.Log.toStringLastN(10));
             this.logDialog.open(global.get_current_time(), true);
         });
@@ -69,8 +75,8 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
 
     }
 
-    reloadDisplays() {
-        if (Array.isArray(this.displays) && 1 <= this.displays.length) {
+    addDisplaySliders() {
+        if (Array.isArray(this.displays) && 0 < this.displays.length) {
             var mainSliderValue = this.displays[0].current / this.displays[0].max; 
 
             if (this.mainSlider == null) {

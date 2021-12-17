@@ -12,7 +12,6 @@ const Log = Me.imports.services.log;
 var LogDialogBox = GObject.registerClass(class Log_DialogBox extends ModalDialog.ModalDialog {
     _init() {
         super._init({ styleClass: 'extension-dialog'});
-        this._destroyOnClose = false;
 
         this.setButtons([{ label: "OK",
                            action: () => {this._onClose()},
