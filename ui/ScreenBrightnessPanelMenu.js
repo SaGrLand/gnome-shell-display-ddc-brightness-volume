@@ -49,6 +49,7 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
                 Log.Log.log(`ScreenBrightnessPanelMenu - ddcutil not installed.`);
                 this.installDDCUtilButton.connect('activate', (item) => {
                     this.installDDCUtilDialog = new InstallDDCUtilDialogBox.InstallDDCUtilDialogBox();
+                    this.installDDCUtilDialog.connect('destroy', () => {this.installDDCUtilDialog = null});
                     this.installDDCUtilDialog.open(global.get_current_time(), true);
                 });
                 this.menu.addMenuItem(this.installDDCUtilButton);
@@ -61,6 +62,7 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
         this.logButton = new PopupMenu.PopupMenuItem('Show logging');
         this.logButton.connect('activate', (item) => {
             this.logDialog = new LogDialogBox.LogDialogBox();
+            this.logDialog.connect('destroy', () => {this.logDialog = null});
             this.logDialog.setText(Log.Log.toStringLastN(10));
             this.logDialog.open(global.get_current_time(), true);
         });
@@ -100,12 +102,10 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
 
     _onDestroy(){
         if (this.logDialog) {
-            this.logDialog.close();
             this.logDialog.destroy();
             this.logDialog = null;
         };
         if (this.installDDCUtilDialog) {
-            this.installDDCUtilDialog.close();
             this.installDDCUtilDialog.destroy();
             this.installDDCUtilDialog = null;
         };
