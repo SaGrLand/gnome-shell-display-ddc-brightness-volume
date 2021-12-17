@@ -6,6 +6,20 @@ const Me = ExtensionUtils.getCurrentExtension();
 const Log = Me.imports.services.log;
 const MyShell = Me.imports.services.shell;
 
+function getValueFromString(value, key, idx){
+    if (value != null){
+        if (value.includes(key)){
+            if(idx != null){
+                return value.split(key)[idx].trim();
+            } else {
+                return value.split(key);
+            }
+
+        }
+    }
+    return null;
+}
+
 function getDisplays() {
 
     const result = MyShell.exec('ddcutil detect --brief');
@@ -20,12 +34,12 @@ function getDisplays() {
     result.split('Display ').forEach(group => {
         const lines = group.split('\n');
         if (2 < lines.length){
-            const bus = lines[1] ? lines[1].split('/dev/i2c-')[1].trim() : null;
-            const description = lines[2] ? lines[2].split('Monitor:')[1].trim() : null;
-            const name = description ? description.split(':')[1] : null;
+            const bus = getValueFromString(lines[1], '/dev/i2c-', 1);
+            const description = getValueFromString(lines[2], 'Monitor:', 1);
+            const name = getValueFromString(description, ':', 1);
             //const serialNumber = description ? description.split(':')[2] : null;
             
-            if (bus && name){ //&& serialNumber) {
+            if (bus && name){
                 var  rv = getDisplayBrightness(bus);
                 var current = rv.current;
                 var max = rv.max;
@@ -55,31 +69,24 @@ function getDisplays() {
     return displays;
 }
 
+
+
 function getDisplayBrightness(bus) {
     const result = MyShell.exec(`ddcutil getvcp 10 --bus ${bus} --brief`);
     Log.Log.log(`getDisplayBrightness - bus: ${bus}, result: ${result}`);
 
-    var vcp_split = result.split('VCP ')[1];
-    if (vcp_split==null){
+    var values = getValueFromString(getValueFromString(result, 'VCP ', 1),
+                                    ' ', null);
+
+    if (values == null || values.length < 4){
         return {
         current: null,
         max: null
         };
     }
-
-    var values = vcp_split.split(" ");
-
-    if (values.length < 4){
-        return {
-        current: null,
-        max: null
-        };
-    }
-
-
     return {
-        current: values[2],
-        max: values[3]
+        current: values[2].trim(),
+        max: values[3].trim()
     };
 }
 

@@ -36,7 +36,7 @@ class Log {
 		this.init();
 
 		var rv = "";
-		for (let i = Math.min(0, Log.logs.length-n); i < Log.logs.length; i++) {
+		for (var i = Math.min(0, Log.logs.length-n); i < Log.logs.length; i++) {
 			rv += "### " + Log.logs[i] + "\n";
 		}
 		return rv;
