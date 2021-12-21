@@ -1,31 +1,31 @@
-class Log {
+var Log = class  {
 	static init(){
-		if ( typeof Log.logs == 'undefined' ) {
-        	Log.logs = [];
+		if ( typeof this.logs == 'undefined' ) {
+        	this.logs = [];
     	}
-    	if ( typeof Log.maxLength == 'undefined' ) {
-        	Log.maxLength = 100;
+    	if ( typeof this.maxLength == 'undefined' ) {
+        	this.maxLength = 100;
     	}
 	}
 
 	static log(x){
 		this.init();
 
-		Log.logs.push(x);
-		if(Log.maxLength <= Log.logs.length){
-			Log.logs.pop();
+		this.logs.push(x);
+		if(this.maxLength <= this.logs.length){
+			this.logs.pop();
 		}
 	}
 
 	static empty(){
-		Log.logs = [];
+		this.logs = [];
 	}
 
 	static toString(){
 		this.init();
 
 		var rv = "";
-		for (var l of Log.logs){ 
+		for (var l of this.logs){ 
 			rv += "### " + l + "\n";
 		}
 		return rv;
@@ -36,8 +36,8 @@ class Log {
 		this.init();
 
 		var rv = "";
-		for (var i = Math.max(0, Log.logs.length-n); i < Log.logs.length; i++) {
-			rv += "### " + Log.logs[i] + "\n";
+		for (var i = Math.max(0, this.logs.length-n); i < this.logs.length; i++) {
+			rv += "### " + this.logs[i] + "\n";
 		}
 		return rv;
 	}
