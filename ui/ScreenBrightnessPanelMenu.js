@@ -3,6 +3,7 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const GObject = imports.gi.GObject;
 const ExtensionUtils = imports.misc.extensionUtils;
+const Gio = imports.gi.Gio;
 const Me = ExtensionUtils.getCurrentExtension();
 
 const DDC = Me.imports.services.ddc;
@@ -18,9 +19,8 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
     _init() {
         super._init(St.Align.START);
         this.connect('destroy', () => {this._onDestroy()});
-
-        var icon =  new St.Icon({icon_name: 'display-brightness-symbolic', 
-                                   style_class: 'system-status-icon'});
+        var gicon = Gio.icon_new_for_string(Me.path + '/ui/extension-display-brightness-symbolic.svg');
+        var icon =  new St.Icon({gicon, style_class: 'system-status-icon'});
         this.add_actor(icon);
 
         var iconLabel = new St.Label({
