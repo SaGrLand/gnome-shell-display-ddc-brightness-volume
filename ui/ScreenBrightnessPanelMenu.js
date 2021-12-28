@@ -19,8 +19,8 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
     _init() {
         super._init(St.Align.START);
         this.connect('destroy', () => {this._onDestroy()});
-        var gicon = Gio.icon_new_for_string(Me.path + '/ui/extension-display-brightness-symbolic.svg');
-        var icon =  new St.Icon({gicon, style_class: 'system-status-icon'});
+        var icon =  new St.Icon({icon_name: 'display-projector-symbolic', 
+                                   style_class: 'system-status-icon'});
         this.add_actor(icon);
 
         var iconLabel = new St.Label({
@@ -79,21 +79,18 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
 
     addDisplaySliders() {
         if (Array.isArray(this.displays) && 0 < this.displays.length) {
-            var mainSliderValue = this.displays[0].current / this.displays[0].max; 
-
-            if (this.mainSlider == null) {
-                this.mainSlider = new SliderMenuItem.MainBrightnessSliderItem(
-                    mainSliderValue, this.sliders, {}); 
-            }
-
-            this.menu.addMenuItem(this.mainSlider);
-            this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
             for (var display of this.displays) {
+                this.menu.addMenuItem(new PopupMenu.PopupMenuItem(display.name));
                 var slider = new SliderMenuItem.BrightnessSliderItem(
                     display.bus, display.name, display.current, display.max, {});
                 this.sliders.push(slider);
                 this.menu.addMenuItem(slider);
+                var audioslider = new SliderVolumeMenuItem.VolumeSliderItem(
+                    display.bus, display.name, display.currentVol, display.maxVol, {});
+                this.sliders.push(audioslider);
+                this.menu.addMenuItem(audioslider);
+                this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
             }
         } else {
             this.menu.addMenuItem(new PopupMenu.PopupMenuItem('No monitors detected.', {'reactive': false}));
