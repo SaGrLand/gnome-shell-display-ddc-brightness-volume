@@ -51,13 +51,27 @@ function getDisplays() {
                 } else {
                     Log.Log.log(`getDisplays - OK ${bus}, ${description}, ${name}, ${current}, ${max}`);
                 }
+                
+                var  av = getAudioVolume(bus);
+                var currentVol = av.currentVol;
+                var maxVol = av.maxVol;
+                
+                if (currentVol == null || maxVol == null){
+                    Log.Log.log(`getDisplays Audio - ERR ${bus}, ${description}, ${name}, ${currentVol}, ${maxVol}`);
+                    current = 0;
+                    max = 100;
+                } else {
+                    Log.Log.log(`getDisplays Audio - OK ${bus}, ${description}, ${name}, ${currentVol}, ${maxVol}`);
+                }      
 
                 displays.push({
                     bus,
                     name,
                     //serialNumber,
                     current,
-                    max
+                    max,
+                    currentVol,
+                    maxVol
                 });
             } else {
                 Log.Log.log(`getDisplays - ERR ${bus}, ${description}, ${name}`);
@@ -69,6 +83,25 @@ function getDisplays() {
     return displays;
 }
 
+function getAudioVolume(bus) {
+	const result = MyShell.exec(`ddcutil getvcp 62 --bus ${bus} --brief`);
+	Log.Log.log(`getAudioVolume - bus: ${bus}, result: ${result}`);
+	    
+	var values = getValueFromString(getValueFromString(result, 'VCP ', 1),
+                                    ' ', null);
+
+    if (values == null || values.length < 4){
+        return {
+        currentVol: null,
+        maxVol: null
+        };
+    }
+    return {
+        currentVol: values[2].trim(),
+        maxVol: values[3].trim()
+    };
+	
+}
 
 
 function getDisplayBrightness(bus) {
@@ -88,6 +121,11 @@ function getDisplayBrightness(bus) {
         current: values[2].trim(),
         max: values[3].trim()
     };
+}
+
+function setAudioVolume(bus, value) {
+    const result = MyShell.execAsync(`ddcutil setvcp 62 ${value} --bus ${bus}`);
+    Log.Log.log(`setAudioVolume - value: ${value}, bus: ${bus}, result: ${result}`);
 }
 
 function setDisplayBrightness(bus, value) {
