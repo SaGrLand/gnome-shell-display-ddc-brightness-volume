@@ -50,11 +50,9 @@ var BrightnessSliderItem = GObject.registerClass(class Brightness_SliderItem ext
               this._broadcastBrightness(item._value);
         });
 
-        this.display_label = new St.Label({
-                        style_class: 'helloworld-label', // add CSS label
-                        text: this.name
-                        });
-        this.add_child(this.display_label);
+        var icon =  new St.Icon({icon_name: 'display-brightness-symbolic', 
+                                   style_class: 'menuItem'});
+        this.add_child(icon);
 
     }
 
@@ -85,31 +83,4 @@ var BrightnessSliderItem = GObject.registerClass(class Brightness_SliderItem ext
         };
     }
 
-});
-
-var MainBrightnessSliderItem = GObject.registerClass(class Main_BrightnessSliderItem extends LabeldSliderItem {  
-    _init(value, sliders, params) {
-        super._init(value, params);
-        this.sliders = sliders;
-
-        this.slider.connect('drag-end', (item) => {
-              this._setAllBrightness(item._value)
-        });
-
-        this.slider.connect('notify::value', (item) => {
-              this._setAllValue(item._value)
-        });
-    }
-
-    _setAllBrightness(value) {
-        for (var s of this.sliders) {
-           s.setBrightness(value);
-        }
-    }
-
-    _setAllValue(value) {
-        for (var s of this.sliders) {
-           s.setValue(value);
-        }
-    }
 });
