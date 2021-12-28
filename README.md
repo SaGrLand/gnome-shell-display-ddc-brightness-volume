@@ -24,7 +24,7 @@ sudo usermod -aG i2c $USER
 ```shell
 sudo cp 45-ddcutil-i2c.rules /etc/udev/rules.d
 ```
-5. Add i2c-dev Modul
+5. Add i2c-dev Module
 
 ```shell
 sudo /bin/sh -c 'echo i2c-dev >> /etc/modules-load.d/i2c-dev.conf'
