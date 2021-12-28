@@ -1,5 +1,7 @@
 # gnome-shell-display-ddc-brightness-volume
 
+<img src="https://github.com/SaGrLand/gnome-shell-display-ddc-brightness-volume/blob/master/Display_DCC_Brightness_Volume.png">
+
 Simple GNOME extension to control displays' brightness and audio volume via DDC.
 
 ## Preparation (Manjaro)
