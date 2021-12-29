@@ -11,6 +11,7 @@ const Log = Me.imports.services.log;
 const MyShell = Me.imports.services.shell;
 const Timer = Me.imports.services.timer;
 const SliderMenuItem = Me.imports.ui.SliderMenuItem;
+const SliderVolumeMenuItem = Me.imports.ui.SliderVolumeMenuItem;
 const LogDialogBox = Me.imports.ui.LogDialogBox;
 const InstallDDCUtilDialogBox = Me.imports.ui.InstallDDCUtilDialogBox;
 
