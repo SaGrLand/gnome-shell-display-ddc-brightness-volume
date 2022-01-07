@@ -4,7 +4,7 @@
 
 Simple GNOME extension to control displays' brightness and audio volume via DDC.
 
-## Preparation (Manjaro)
+## Preparation (Manjaro/ Fedora)
 
 1. Install `ddcutil`: 
 
