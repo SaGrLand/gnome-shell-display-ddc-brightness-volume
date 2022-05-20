@@ -87,10 +87,12 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
                     display.bus, display.name, display.current, display.max, {});
                 this.sliders.push(slider);
                 this.menu.addMenuItem(slider);
-                var audioslider = new SliderVolumeMenuItem.VolumeSliderItem(
-                    display.bus, display.name, display.currentVol, display.maxVol, {});
-                this.sliders.push(audioslider);
-                this.menu.addMenuItem(audioslider);
+                if (!(isNaN(display.currentVol))) {
+                    var audioslider = new SliderVolumeMenuItem.VolumeSliderItem(
+                        display.bus, display.name, display.currentVol, display.maxVol, {});
+                    this.sliders.push(audioslider);
+                    this.menu.addMenuItem(audioslider);
+                }
                 this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
             }
         } else {
