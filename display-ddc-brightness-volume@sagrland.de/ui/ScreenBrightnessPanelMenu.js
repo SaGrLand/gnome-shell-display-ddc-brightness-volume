@@ -68,7 +68,7 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
             this.logDialog.open(global.get_current_time(), true);
         });
 
-        this.reloadButton = new PopupMenu.PopupImageMenuItem('','system-restart-symbolic');
+        this.reloadButton = new PopupMenu.PopupImageMenuItem('Reload displays','system-restart-symbolic');
         this.reloadButton.connect('activate', (item) => {
             this.populateMenu();
         });
