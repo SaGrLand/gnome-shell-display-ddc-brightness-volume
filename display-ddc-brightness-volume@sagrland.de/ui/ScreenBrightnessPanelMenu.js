@@ -60,7 +60,7 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
             this.displays = null; 
         }
 
-        this.logButton = new PopupMenu.PopupMenuItem('Show logging');
+        this.logButton = new PopupMenu.PopupImageMenuItem('Show logging','text-x-generic-symbolic');
         this.logButton.connect('activate', (item) => {
             this.logDialog = new LogDialogBox.LogDialogBox();
             this.logDialog.connect('destroy', () => {this.logDialog = null});
@@ -68,7 +68,7 @@ var ScreenBrightnessPanelMenu = GObject.registerClass(class Screen_BrightnessPan
             this.logDialog.open(global.get_current_time(), true);
         });
 
-        this.reloadButton = new PopupMenu.PopupMenuItem('Reload displays');
+        this.reloadButton = new PopupMenu.PopupImageMenuItem('','system-restart-symbolic');
         this.reloadButton.connect('activate', (item) => {
             this.populateMenu();
         });
