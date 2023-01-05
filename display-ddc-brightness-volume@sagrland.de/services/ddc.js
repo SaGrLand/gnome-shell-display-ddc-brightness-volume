@@ -35,8 +35,8 @@ function getDisplays() {
         const lines = group.split('\n');
         if (2 < lines.length){
             const bus = getValueFromString(lines[1], '/dev/i2c-', 1);
-            const description = getValueFromString(lines[2], 'Monitor:', 1);
-		if (!description){ 
+            var description = getValueFromString(lines[2], 'Monitor:', 1);
+		if (description == null){ 
 			description = getValueFromString(lines[3], 'Monitor:', 1);
 		}	
             const name = getValueFromString(description, ':', 1);
