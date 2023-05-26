@@ -2,6 +2,7 @@
   "description": "Simple GNOME extension to control displays' brightness and audio volume via DDC. It requires ddcutil to be installed, i2c permissions for non-root users configured.",
   "name": "Display DDC Brightness Volume",
   "shell-version": [
+    "44",
     "43",
     "42",
     "41",
